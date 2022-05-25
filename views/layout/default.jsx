@@ -1,10 +1,11 @@
 const React = require('react');
 
 function Default(html) {
+    console.log(html.title)
     return (
         <html>
             <head>
-               <title>Default</title> 
+               <title>Bread!!!</title> 
             </head>
             <body>
                 <h1>HTML Rendered!</h1>
