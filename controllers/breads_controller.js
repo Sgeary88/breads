@@ -7,7 +7,7 @@ const Bread = require("../models/bread.js");
 breads.get("/", (req, res) => {
   console.log(Bread);
 
-  Bread.find().then(foundBreads => {
+  Bread.find().then((foundBreads) => {
     console.log(foundBreads);
     res.render("index", {
       breads: foundBreads,
@@ -22,19 +22,19 @@ breads.get("/new", (req, res) => {
 });
 
 // EDIT
-breads.get('/:indexArray/edit', (req, res) => {
-  res.render('edit', {
-    bread: Bread[req.params.indexArray],
-    index: req.params.indexArray
-  })
-})
+breads.get("/:id/edit", (req, res) => {
+  Bread.findById(req.params.id).then(foundBread => {
+    res.render("edit", {
+      bread: foundBread
+      });
+    });
+  });
 
 // SHOW
 breads.get("/:id", (req, res) => {
-  Bread.findById(req.params.id).then(foundBread => {
-    res.render("Show", {bread: foundBread});
-  })
-  
+  Bread.findById(req.params.id).then((foundBread) => {
+    res.render("Show", { bread: foundBread });
+  });
 });
 
 // CREATE
@@ -54,22 +54,31 @@ breads.post("/", (req, res) => {
 });
 
 // UPDATE
-breads.put('/:arrayIndex', (req, res) => {
-  if(req.body.hasGluten === 'on'){
-    req.body.hasGluten = true
+breads.put("/:id", (req, res) => {
+  if (req.body.hasGluten === "on") {
+    req.body.hasGluten = true;
   } else {
     req.body.hasGluten = false
   }
-  Bread[req.params.arrayIndex] = req.body
-  res.redirect(`/breads/${req.params.arrayIndex}`)
-})
-
+  // console.log(req.params.id);
+  // console.log(req.body);
+  // res.send('debug')
+  // return
+  Bread.findByIdAndUpdate(req.params.id, req.body, {new: true}).then(updateBread => {
+    console.log(updateBread);
+    res.redirect(`/breads/${req.params.id}`);
+  })
+});
 
 // DELETE
-breads.delete("/:indexArray", (req, res) => {
-  console.log('did this do anything')
-  Bread.splice(req.params.indexArray, 1);
-  res.status(303).redirect("/breads");
+breads.delete("/:id", (req, res) => {
+  Bread.findByIdAndDelete(req.params.id).then(deletedBread => {
+    res.status(303).redirect("/breads");
+
+  });
 });
 
 module.exports = breads;
+
+
+    
