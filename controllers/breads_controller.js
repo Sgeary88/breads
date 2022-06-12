@@ -5,16 +5,16 @@ const Bread = require("../models/bread.js");
 
 // INDEX
 breads.get("/", (req, res) => {
-  console.log(Bread);
-
-  Bread.find().then((foundBreads) => {
-    console.log(foundBreads);
-    res.render("index", {
-      breads: foundBreads,
-      title: "Index Page",
+  Baker.find().then(foundBakers => {
+    Bread.find().then((foundBreads) => {
+      res.render("index", {
+        breads: foundBreads,
+        bakers: foundBakers,
+        title: "Index Page",
+      });
     });
   });
-});
+  });
 
 // NEW
 breads.get("/new", (req, res) => {

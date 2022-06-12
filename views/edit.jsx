@@ -32,7 +32,7 @@ function Edit({bread, bakers}) {
           name="hasGluten"
           id="hasGluten"
           defaultChecked
-          defaultValue={bread.hasGluten}
+          // defaultValue={bread.hasGluten}
         />
         <br />
         <input type="submit" />

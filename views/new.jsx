@@ -22,7 +22,7 @@ function New({bakers}) {
         </select>
         <label htmlFor="hasGluten">Has Gluten?</label>
         <input
-          type={"checkbox"}
+          type="checkbox"
           name="hasGluten"
           id="hasGluten"
           defaultChecked

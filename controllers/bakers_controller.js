@@ -8,4 +8,11 @@ baker.get('/data/seed', (req, res) => {
     Baker.insertMany(bakerSeedData).then(res.redirect('/breads'));
 });
 
+// index
+baker.get('/', (req, res) => {
+    Baker.find().populate('breads').then(foundBakers => {
+        res.send(foundBakers);
+    });
+});
+
 module.exports = baker;
