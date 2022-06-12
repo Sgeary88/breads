@@ -1,8 +1,9 @@
 
 const React = require("react");
+const baker = require("../controllers/bakers_controller");
 const Default = require("./layouts/Default");
 
-function New() {
+function New({bakers}) {
   return (
     <Default>
       <h2>Add a new bread</h2>
@@ -13,12 +14,11 @@ function New() {
         <input type={"text"} name={"image"} id={"id"} />
         <label htmlFor="baker">Baker</label>
         <select name="baker" id="baker">
-          <option value="Rachel">Rachel</option>
-          <option value="Monica">Monica</option>
-          <option value="Joey">Joey</option>
-          <option value="Chandler">Chandler</option>
-          <option value="Ross">Ross</option>
-          <option value="Phoebe">Phoebe</option>
+          {bakers.map((baker) => {
+            return (
+              <option value={baker.id} key={baker.id}>{baker.name}</option>
+            )
+          })}
         </select>
         <label htmlFor="hasGluten">Has Gluten?</label>
         <input

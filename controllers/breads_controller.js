@@ -1,4 +1,4 @@
-
+const Baker = require('../models/baker.js');
 const express = require("express");
 const breads = express.Router();
 const Bread = require("../models/bread.js");
@@ -18,26 +18,42 @@ breads.get("/", (req, res) => {
 
 // NEW
 breads.get("/new", (req, res) => {
-  res.render("new");
+  Baker.find().then(foundBakers => {
+    res.render('new', {
+      bakers: foundBakers
+    })
+  })
 });
 
 // EDIT
-breads.get("/:id/edit", (req, res) => {
-  Bread.findById(req.params.id).then(foundBread => {
-    res.render("edit", {
-      bread: foundBread
-      });
-    });
-  });
+breads.get('/:id/edit', (req, res) => {
+  Baker.find()
+    .then(foundBakers => {
+        Bread.findById(req.params.id)
+          .then(foundBread => {
+            res.render('edit', {
+                bread: foundBread, 
+                bakers: foundBakers 
+            })
+          })
+    })
+})
+
 
 // SHOW
-breads.get("/:id", (req, res) => {
-  Bread.findById(req.params.id).then((foundBread) => {
-    const bakedBy = foundBread.getBakedBy();
-    console.log(bakedBy);
-    res.render("Show", { bread: foundBread });
-  });
-});
+breads.get('/:id', (req, res) => {
+  Bread.findById(req.params.id)
+      .populate('baker')
+      .then(foundBread => {
+        res.render('show', {
+            bread: foundBread
+        })
+      })
+      .catch(err => {
+        res.send('404')
+      })
+})
+
 
 // CREATE
 breads.post("/", (req, res) => {
@@ -57,8 +73,10 @@ breads.post("/", (req, res) => {
 
 // UPDATE
 breads.put("/:id", (req, res) => {
-  if (req.body.hasGluten === "on") {
-    req.body.hasGluten = true;
+  console.log(req.body)
+  if (req.body.hasGluten == "on") {
+    console.log('has gluten')
+    req.body.hasGluten = true
   } else {
     req.body.hasGluten = false
   }
