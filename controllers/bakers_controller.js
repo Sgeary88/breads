@@ -15,4 +15,19 @@ baker.get('/', (req, res) => {
     });
 });
 
+// show
+baker.get('/:id', (req, res) => {
+    Baker.findById(req.params.id)
+    .populate({
+        path: 'breads',
+        options: { limit: 2 }
+    })
+    .then(foundBaker => {
+        console.log(foundBaker)
+        res.render('bakerShow', {
+            baker: foundBaker
+        })
+    })
+})
+
 module.exports = baker;
